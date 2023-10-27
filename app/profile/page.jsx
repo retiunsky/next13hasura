@@ -12,7 +12,7 @@ function Profile() {
 
   return (
     <>
-      {isLoading && <Loading />}
+      {/* {isLoading && <Loading />} */}
       {user && (
         <>
           <TableRow className="align-items-center profile-header mb-5 text-center text-md-left" data-testid="profile">
