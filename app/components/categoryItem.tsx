@@ -1,7 +1,7 @@
 import { Card, CardMedia, Typography, useTheme } from "@mui/material";
 import Link from "next/link";
 
-export default function CategoryItem({ category }) {
+export default function CategoryItem({ category:any }) {
   const theme = useTheme();
 
   return (
