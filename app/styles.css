@@ -1,0 +1,28 @@
+#app { height: 100% }
+#nprogress {
+  position: relative;
+  z-index: 9999999999;
+}
+html,
+body {
+  position: relative;
+  height: 100%;
+}
+
+body {
+  background: #eee;
+  font-family: Helvetica Neue, Helvetica, Arial, sans-serif;
+  font-size: 14px;
+  color: #000;
+  margin: 0;
+  padding: 0;
+}
+
+.swiper {
+  background-position: center;
+  background-size: cover;
+  width: 300px;
+  height: 400px;
+  margin-top: 30px;
+  margin-bottom: 30px;
+}
