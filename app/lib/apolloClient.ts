@@ -18,15 +18,10 @@ import { setContext } from '@apollo/client/link/context';
 let apolloClient: ApolloClient<NormalizedCacheObject> | undefined;
 
 const authLink = setContext((_, { context }) => {
-  // if (typeof window !== 'undefined') {
-  //   const token = localStorage.getItem('token');
-  // }
-  // const { accessToken } = context;
   return {
     headers: {
       ...context,     
       'x-hasura-admin-secret': process.env.X_HASURA_ADMIN_SECRET,
-      // authorization: accessToken ? `Bearer ${accessToken}` : "",
     },
   };
 });
@@ -39,17 +34,7 @@ const createApolloClient = () => {
   return new ApolloClient({
     ssrMode: typeof window === 'undefined',
     link: authLink.concat(httpLink),
-    // link: new HttpLink({
-    // uri: `${process.env.NEXT_PUBLIC_API_URL}`, // Server URL (must be absolute)
-    // credentials: "include", // Additional fetch() options like `credentials` or `headers`
-    // headers:
-    //   typeof window === "undefined"
-    //     ? {} // No need to set anything here because we use apolloClient.server on SSR,
-    //     : // although we still need to check if window is undefined because of Next.js
-    //       { authorization: getCookies(document.cookie).token }, // CSR
-    // }),
     cache: new InMemoryCache({
-      // typePolicies is not required to use Apollo with Next.js - only for doing pagination.
       typePolicies: {
         Query: {
           fields: {
@@ -65,9 +50,7 @@ export const mergeCaches = (
   sourceCache: NormalizedCacheObject,
   destinationCache: NormalizedCacheObject
 ): NormalizedCacheObject => {
-  // Merge the existing cache into data passed from getStaticProps/getServerSideProps
   const data = merge(sourceCache, destinationCache, {
-    // combine arrays using object equality (like in sets)
     arrayMerge: (destinationArray, sourceArray) => [
       ...sourceArray,
       ...destinationArray.filter((d) =>
@@ -81,38 +64,27 @@ export const mergeCaches = (
 export const initializeApollo = (initialState?: NormalizedCacheObject) => {
   const _apolloClient = apolloClient ?? createApolloClient();
 
-  // If your page has Next.js data fetching methods that use Apollo Client, the initial state
-  // gets hydrated here
   if (initialState) {
-    // Get existing cache, loaded during client side data fetching
     const existingCache = _apolloClient.extract();
 
     const data = mergeCaches(initialState, existingCache);
 
-    // Restore the cache with the merged data
     _apolloClient.cache.restore(data);
   }
 
-  // For SSG and SSR always create a new Apollo Client
   if (typeof window === 'undefined' && !apolloClient) {
-    // Override apolloClient query method to persist cache into the request storage
     const originalQuery = _apolloClient.query;
-    _apolloClient.query = async function <
-      T = unknown,
-      TVariables = OperationVariables
-    >(options: QueryOptions<TVariables, T>): Promise<ApolloQueryResult<T>> {
+    _apolloClient.query = async function (options) {
       const r = await originalQuery.apply(originalQuery, [options]);
       const currentCache = _apolloClient.cache.extract();
-      // Put the cache into local storage specific to this request.
       getRequestStorage().apolloState = mergeCaches(
         getRequestStorage().apolloState ?? {},
         currentCache
       );
-      return r as ApolloQueryResult<T>;
+      return r ;
     };
     return _apolloClient;
   }
-  // Create the Apollo Client once in the client
   if (!apolloClient) apolloClient = _apolloClient;
 
   return _apolloClient;
