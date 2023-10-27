@@ -1,12 +1,12 @@
 import { Card, CardMedia, Typography, useTheme } from "@mui/material";
 import Link from "next/link";
 
-export default function CategoryItem({ category:any }) {
+export default function CategoryItem(props:any ) {
   const theme = useTheme();
 
   return (
     <Link
-      href={`/products/${category.id}`}
+      href={`/products/${props.category.id}`}
       style={{ textDecoration: "none", cursor: "pointer" }}
     >
       <Card sx={{ "&:hover": { cursor: "pointer" } }}>
@@ -20,7 +20,7 @@ export default function CategoryItem({ category:any }) {
             transition: "transform 0.15s ease-in-out",
           }}
           component="img"
-           src={category.img}
+           src={props.category.img}
         />
         <Typography
           gutterBottom
@@ -37,7 +37,7 @@ export default function CategoryItem({ category:any }) {
             color: theme.palette.primary.main,
           }}
         >
-          {category.title}
+          {props.category.title}
         </Typography>
       </Card>
     </Link>
