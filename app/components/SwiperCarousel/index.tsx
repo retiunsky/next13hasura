@@ -17,8 +17,6 @@ const Carousel: React.FC = (props: any) => {
   const desktop = useMediaQuery(theme.breakpoints.up('md'));
   const tablet = useMediaQuery(theme.breakpoints.only('sm'));
   const responsive = desktop ? 4 : tablet ? 3 : 2;
-console.log(data);
-
   return (
     <Swiper width={1500}
       rewind={true}
@@ -34,7 +32,7 @@ console.log(data);
       }}
       modules={[Keyboard, FreeMode, Navigation, Pagination]}
     >
-      {data.products.map((item: any) => {
+      {data?.products?.map((item: any) => {
         return (
           <SwiperSlide key={item.id}>
             <CategoryItem category={item} />
