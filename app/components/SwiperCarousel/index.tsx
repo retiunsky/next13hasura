@@ -17,7 +17,11 @@ const Carousel: React.FC = (props: any) => {
   const desktop = useMediaQuery(theme.breakpoints.up('md'));
   const tablet = useMediaQuery(theme.breakpoints.only('sm'));
   const responsive = desktop ? 4 : tablet ? 3 : 2;
+  if(loading){
+    return (<>Loading...</>)
+  }
   return (
+    <>
     <Swiper width={1500}
       rewind={true}
       slidesPerView={responsive}
@@ -41,6 +45,7 @@ const Carousel: React.FC = (props: any) => {
       })
       }
     </Swiper>
+    </>
   );
 }
 
