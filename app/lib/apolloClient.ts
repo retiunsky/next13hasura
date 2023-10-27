@@ -36,7 +36,7 @@ function makeSuspenseCache() {
   return new SuspenseCache();
 }
 
-export function ApolloWrapper({ children }: React.PropsWithChildren) {
+export function initializeApollo({ children }: React.PropsWithChildren) {
   return (
     <ApolloNextAppProvider
       makeClient={makeClient}
