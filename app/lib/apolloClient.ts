@@ -73,16 +73,7 @@ export const initializeApollo = (initialState?: NormalizedCacheObject) => {
   }
 
   if (typeof window === 'undefined' && !apolloClient) {
-    const originalQuery = _apolloClient.query;
-    _apolloClient.query = async function (options) {
-      const r = await originalQuery.apply(originalQuery, [options]);
-      const currentCache = _apolloClient.cache.extract();
-      getRequestStorage().apolloState = mergeCaches(
-        getRequestStorage().apolloState ?? {},
-        currentCache
-      );
-      return r ;
-    };
+    const originalQuery = _apolloClient.query;   
     return _apolloClient;
   }
   if (!apolloClient) apolloClient = _apolloClient;
