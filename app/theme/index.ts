@@ -3,7 +3,10 @@ import { theme as blue } from "./presets/blue";
 import { theme as _default } from "./presets/default";
 import { theme as red } from "./presets/red";
 import { Palette, PaletteColor } from "@mui/material/styles";
-import { DeepPartial } from "../utility/types";
+
+export type DeepPartial<T> = {
+  [P in keyof T]?: T[P] extends object ? DeepPartial<T[P]> : T[P];
+};
 
 declare module "@mui/material/styles" {
   interface Palette {
