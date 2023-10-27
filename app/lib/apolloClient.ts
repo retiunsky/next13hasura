@@ -10,6 +10,7 @@ import {
   NextSSRInMemoryCache,
   SSRMultipartLink,
 } from "@apollo/experimental-nextjs-app-support/ssr";
+import { setContext } from '@apollo/client/link/context';
 
 const authLink = setContext((_, { context }) => {
   return {
